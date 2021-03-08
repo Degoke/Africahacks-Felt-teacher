@@ -5,7 +5,7 @@ import Login from '../pages/login'
 import PrivateProfile from '../pages/profile/private'
 import PublicProfile from '../pages/profile/public'
 import SearchParents from '../pages/search/parent'
-import SearchTeacher from '../pages/search/teacher'
+import SearchTeachers from '../pages/search/teacher'
 import SignUp from '../pages/signup'
 import Verify from '../pages/verify'
 
@@ -48,7 +48,7 @@ const Routes: Iroute[] = [
   {
     path: '/teachers',
     name: 'Teachers',
-    component: SearchTeacher,
+    component: SearchTeachers,
   },
   {
     path: '/parents',
