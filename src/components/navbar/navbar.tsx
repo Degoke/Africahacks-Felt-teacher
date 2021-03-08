@@ -78,7 +78,7 @@ const NavBar: React.FC<Pprops> = (props: Pprops) => {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button component={Link} to="/">
+                  <Button component={Link} to="/teachers">
                     Teachers
                   </Button>
                 </Grid>

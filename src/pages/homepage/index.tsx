@@ -3,6 +3,7 @@ import MyButton from '../../components/global/button'
 import MyInput from '../../components/global/input'
 import NavBar from '../../components/navbar/navbar'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
+import Footer from '../../components/global/footer'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -278,6 +279,7 @@ const HomePage: React.FC = (): React.ReactElement => {
           </Grid>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
