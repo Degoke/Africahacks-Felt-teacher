@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       padding: theme.spacing(0, 6),
+      backgroundColor: '#ffffff',
     },
     avatar: {
       height: theme.spacing(4),
@@ -50,17 +51,17 @@ const NavBar: React.FC<Pprops> = (props: Pprops) => {
             <Grid item>
               <Grid container spacing={4}>
                 <Grid item>
-                  <Button component={Link} to="/">
+                  <Button component={Link} to="/" color="primary">
                     Home
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button component={Link} to="/">
+                  <Button component={Link} to="/" color="primary">
                     About Us
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button component={Link} to="/faqs">
+                  <Button component={Link} to="/faqs" color="primary">
                     FAQ'S
                   </Button>
                 </Grid>
@@ -73,17 +74,17 @@ const NavBar: React.FC<Pprops> = (props: Pprops) => {
             <Grid item>
               <Grid container spacing={4}>
                 <Grid item>
-                  <Button component={Link} to="/">
+                  <Button component={Link} to="/" color="primary">
                     Home
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button component={Link} to="/teachers">
+                  <Button component={Link} to="/teachers" color="primary">
                     Teachers
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button component={Link} to="/">
+                  <Button component={Link} to="/" color="primary">
                     Help
                   </Button>
                 </Grid>

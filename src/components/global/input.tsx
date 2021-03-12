@@ -6,6 +6,10 @@ const useStyles = makeStyles(() =>
     border: {
       borderRadius: '25px',
     },
+    label: {
+      color: '#E6E6E8',
+      fontWeight: 'bold',
+    },
   })
 )
 
@@ -29,8 +33,12 @@ const MyInput: React.FC<IProps> = (props: IProps): React.ReactElement => {
       fullWidth={true}
       size="small"
       required={true}
+      color="secondary"
       InputProps={{
         className: classes.border,
+      }}
+      InputLabelProps={{
+        className: classes.label,
       }}
     />
   )

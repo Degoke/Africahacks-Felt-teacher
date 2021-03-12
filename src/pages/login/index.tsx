@@ -4,8 +4,9 @@ import {
   Typography,
   Paper,
   Grid,
-  Button,
-  ButtonGroup,
+  List,
+  ListItem,
+  ListItemText,
 } from '@material-ui/core'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import MyInput from '../../components/global/input'
@@ -19,8 +20,11 @@ import { useHistory } from 'react-router-dom'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: theme.spacing(2),
-      padding: theme.spacing(4),
+      marginTop: theme.spacing(1),
+      padding: theme.spacing(2, 4),
+    },
+    box: {
+      marginTop: theme.spacing(4),
     },
     paper: {
       padding: theme.spacing(4, 2),
@@ -32,11 +36,22 @@ const useStyles = makeStyles((theme: Theme) =>
     centerB: {
       textAlign: 'center',
     },
-    insetB: {
+    unselected: {
       boxShadow: 'inset 0px 2px 4px 1px rgba(33, 32, 156, 0.2)',
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1),
+      '&$selected': {
+        backgroundColor: '#ffffff',
+      },
     },
-    span: {
-      color: 'red',
+    selected: {
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1),
+      boxShadow: 'none',
+    },
+    list: {
+      display: 'flex',
+      flexDirection: 'row',
     },
   })
 )
@@ -69,27 +84,77 @@ const Login: React.FC = (): React.ReactElement => {
       <NavBar page="none" />
       <Grid container className={classes.root}>
         <Grid item xs={1}>
-          <Typography>Back</Typography>
+          <Link to="/">
+            <Typography>Back</Typography>
+          </Link>
         </Grid>
         <Grid item xs={11}>
-          <Container maxWidth="sm" className={classes.root}>
+          <Container maxWidth="sm" className={classes.box}>
             <Paper elevation={4} className={classes.paper}>
               <Grid container direction="column" spacing={2}>
                 <Grid item>
                   <Typography variant="h5">Login</Typography>
                 </Grid>
                 <Grid item>
-                  <ButtonGroup variant="outlined">
-                    <Button size="large" className={classes.insetB}>
-                      Teacher
-                    </Button>
-                    <Button size="large" className={classes.insetB}>
-                      School
-                    </Button>
-                    <Button size="large" className={classes.insetB}>
-                      Parent
-                    </Button>
-                  </ButtonGroup>
+                  <List dense className={classes.list}>
+                    <ListItem
+                      selected={false}
+                      classes={{
+                        root: classes.unselected,
+                        selected: classes.selected,
+                      }}
+                      dense
+                      button
+                    >
+                      <ListItemText
+                        primaryTypographyProps={{
+                          color: 'secondary',
+                          variant: 'h6',
+                        }}
+                        className={classes.centerB}
+                      >
+                        Teacher
+                      </ListItemText>
+                    </ListItem>
+                    <ListItem
+                      selected={true}
+                      classes={{
+                        root: classes.unselected,
+                        selected: classes.selected,
+                      }}
+                      dense
+                      button
+                    >
+                      <ListItemText
+                        primaryTypographyProps={{
+                          color: 'secondary',
+                          variant: 'h6',
+                        }}
+                        className={classes.centerB}
+                      >
+                        School
+                      </ListItemText>
+                    </ListItem>
+                    <ListItem
+                      selected={false}
+                      classes={{
+                        root: classes.unselected,
+                        selected: classes.selected,
+                      }}
+                      dense
+                      button
+                    >
+                      <ListItemText
+                        primaryTypographyProps={{
+                          color: 'secondary',
+                          variant: 'h6',
+                        }}
+                        className={classes.centerB}
+                      >
+                        Parent
+                      </ListItemText>
+                    </ListItem>
+                  </List>
                 </Grid>
                 <Grid item>
                   <form>
@@ -118,7 +183,7 @@ const Login: React.FC = (): React.ReactElement => {
                           justify="space-between"
                         >
                           <Grid item>
-                            <Typography color="error">
+                            <Typography color="textSecondary">
                               Forgot Password?
                             </Typography>
                           </Grid>
@@ -137,8 +202,12 @@ const Login: React.FC = (): React.ReactElement => {
                 <Grid item>
                   <Typography>
                     Already Have an account?{' '}
-                    <span className={classes.span}>
-                      <Link to="/register">Signup</Link>
+                    <span>
+                      <Link to="/register">
+                        <Typography color="textSecondary" display="inline">
+                          Signup
+                        </Typography>
+                      </Link>
                     </span>
                   </Typography>
                 </Grid>
