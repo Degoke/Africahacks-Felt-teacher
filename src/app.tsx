@@ -7,13 +7,14 @@ const App: React.FC = () => {
   const theme = createMuiTheme({
     palette: {
       primary: {
-        main: '#ffffff',
-      },
-      secondary: {
         main: '#5E5DBA',
       },
+      secondary: {
+        main: '#E6E6E8',
+      },
       text: {
-        primary: '#5E5DBA',
+        primary: '#000000',
+        secondary: '#FDB827',
       },
       background: {
         default: '#FFFFFF',

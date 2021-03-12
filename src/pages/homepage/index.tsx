@@ -24,9 +24,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     buttonGroup: {
       padding: theme.spacing(3, 2),
+      borderRadius: '5%',
     },
     paper: {
       padding: theme.spacing(2),
+      boxShadow: 'inset 0px 2px 4px 1px rgba(33, 32, 156, 0.2)',
     },
     paperType: {
       marginTop: theme.spacing(3),
@@ -67,7 +69,7 @@ const HomePage: React.FC = (): React.ReactElement => {
                 <Typography variant="h3">
                   Get Access To the best teachers in town
                 </Typography>
-                <Typography className={classes.smallMargin}>
+                <Typography color="textPrimary" className={classes.smallMargin}>
                   Making Refined and Qualified Teachers to all Schools in
                   Nigeria is our priority. Our platform creates a link between
                   teachers and schools by providing a medium to vet teachers,
@@ -164,7 +166,7 @@ const HomePage: React.FC = (): React.ReactElement => {
             >
               <Grid item>
                 <Typography variant="h3">Who we are</Typography>
-                <Typography className={classes.smallMargin}>
+                <Typography className={classes.smallMargin} color="textPrimary">
                   We are dedicated to providing quality education to students in
                   line with the SDG goal - We accept applications from, and
                   examine teachers to ensure that quality would be provided
@@ -193,7 +195,7 @@ const HomePage: React.FC = (): React.ReactElement => {
             >
               <Grid item>
                 <Typography variant="h3">Get the app</Typography>
-                <Typography className={classes.smallMargin}>
+                <Typography className={classes.smallMargin} color="textPrimary">
                   Our mobile Application makes accessing our services even
                   easier. Get access to the best quality of teachers via a tap
                   from your mobile phone
@@ -235,7 +237,7 @@ const HomePage: React.FC = (): React.ReactElement => {
             >
               <Grid item>
                 <Typography variant="h3">Have Questions?</Typography>
-                <Typography className={classes.smallMargin}>
+                <Typography className={classes.smallMargin} color="textPrimary">
                   We have compiled a list of the questions that have been
                   answered
                 </Typography>
@@ -250,7 +252,13 @@ const HomePage: React.FC = (): React.ReactElement => {
           <Typography variant="h3" className={classes.header}>
             Contact Us
           </Typography>
-          <Grid container direction="column" spacing={3} justify="center">
+          <Grid
+            container
+            direction="column"
+            spacing={3}
+            justify="center"
+            className={classes.bigMargin}
+          >
             <Grid item>
               <MyInput
                 pname="emailaddress"
