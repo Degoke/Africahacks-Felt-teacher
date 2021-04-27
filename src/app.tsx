@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { CssBaseline } from '@material-ui/core'
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
@@ -14,6 +14,7 @@ const App = (): React.ReactElement => {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
+            <Suspense fallback={<h1>loading...</h1>} />
             <Switch>
               {routes.map((route: RoutesInterface) => {
                 return (

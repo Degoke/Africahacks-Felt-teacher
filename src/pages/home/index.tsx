@@ -5,7 +5,7 @@ const Home = (): React.ReactElement => {
   return (
     <div>
       <>
-        <Navbar />
+        <Navbar page="home" />
         <h1>Home</h1>
       </>
     </div>
