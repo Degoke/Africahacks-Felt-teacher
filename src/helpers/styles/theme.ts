@@ -21,7 +21,10 @@ const theme: Theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: 'Montserrat, sans-serif',
+    fontFamily: ['Montserrat', 'sans-serif'].join(','),
+    allVariants: {
+      color: '#5E5DBA',
+    },
   },
 })
 

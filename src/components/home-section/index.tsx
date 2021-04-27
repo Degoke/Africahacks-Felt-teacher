@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React from 'react'
 import { Typography, Grid } from '@material-ui/core'
 import MyButton from '../global/button'
@@ -46,7 +47,9 @@ const HomeSection = ({
               className={classes.smallMargin}
             >
               <Grid item>
-                <Typography variant="h3">{heading}</Typography>
+                <Typography variant="h3" color="primary">
+                  {heading}
+                </Typography>
                 <Typography className={classes.smallMargin} color="textPrimary">
                   {text}
                 </Typography>
