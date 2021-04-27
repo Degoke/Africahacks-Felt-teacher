@@ -1,6 +1,7 @@
 /* eslint-disable react/require-default-props */
 import React from 'react'
 import { TextField } from '@material-ui/core'
+import useStyles from './style'
 
 type InputpropsType = {
   name: string
@@ -12,7 +13,7 @@ type InputpropsType = {
   ref?: React.RefObject<HTMLInputElement>
 }
 
-const MuiInput = ({
+const MyInput = ({
   name,
   label,
   onChange,
@@ -21,6 +22,7 @@ const MuiInput = ({
   end,
   ref,
 }: InputpropsType): React.ReactElement => {
+  const classes = useStyles()
   return (
     <TextField
       name={name}
@@ -35,15 +37,15 @@ const MuiInput = ({
       color="secondary"
       ref={ref}
       InputProps={{
-        className: 'border',
+        className: classes.border,
         startAdornment: start,
         endAdornment: end,
       }}
       InputLabelProps={{
-        className: 'label',
+        className: classes.label,
       }}
     />
   )
 }
 
-export default MuiInput
+export default MyInput

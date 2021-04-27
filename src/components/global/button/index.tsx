@@ -2,6 +2,7 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import useStyles from './style'
 
 type ButtonPropsType = {
   text: string
@@ -11,13 +12,14 @@ type ButtonPropsType = {
   onClick?: (e: React.MouseEvent) => void
 }
 
-const MuiButton = ({
+const MyButton = ({
   text,
   link,
   to,
   onClick,
   type,
 }: ButtonPropsType): React.ReactElement => {
+  const classes = useStyles()
   return (
     <Button
       component={link ? Link : Button}
@@ -27,10 +29,11 @@ const MuiButton = ({
       to={to}
       onClick={onClick}
       type={type}
+      className={classes.border}
     >
       {text}
     </Button>
   )
 }
 
-export default MuiButton
+export default MyButton

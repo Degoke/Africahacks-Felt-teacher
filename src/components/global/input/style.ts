@@ -1,14 +1,13 @@
-import styled from 'styled-components'
-import MuiInput from './index'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
 
-const MyInput = styled(MuiInput)`
-  .border {
-    border-radius: 25px;
-  }
-
-  .label {
-    color: ${(props) => props.theme.palette.secondary.main};
-    font-weight: bold;
-  }
-`
-export default MyInput
+export default makeStyles(() =>
+  createStyles({
+    border: {
+      borderRadius: '25px',
+    },
+    label: {
+      color: '#E6E6E8',
+      fontWeight: 'bold',
+    },
+  })
+)

@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import MenuIcon from '@material-ui/icons/Menu'
-import MyButton from '../global/button/style'
+import MyButton from '../global/button'
 import Logo from '../../assets/logo'
 import useStyles from './style'
 
@@ -45,7 +45,7 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                 <Logo />
               </Grid>
               <Grid item>
-                <Typography>Felt Teachers</Typography>
+                <Typography color="primary">Felt Teachers</Typography>
               </Grid>
             </Grid>
           </Grid>
