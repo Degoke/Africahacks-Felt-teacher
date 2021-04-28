@@ -6,12 +6,15 @@ export default makeStyles((theme: Theme) =>
       marginTop: theme.spacing(1),
       padding: theme.spacing(2, 4),
       [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(2, 0),
+        padding: theme.spacing(2, 1),
       },
     },
     box: {
       marginTop: theme.spacing(2),
-      width: '70%',
+      width: '50%',
+      [theme.breakpoints.down('md')]: {
+        width: '70%',
+      },
       [theme.breakpoints.down('sm')]: {
         width: '100%',
       },
@@ -19,7 +22,7 @@ export default makeStyles((theme: Theme) =>
     paper: {
       padding: theme.spacing(4, 2),
       [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(4, 0),
+        padding: theme.spacing(4, 1),
       },
       textAlign: 'center',
     },
@@ -46,6 +49,9 @@ export default makeStyles((theme: Theme) =>
     list: {
       display: 'flex',
       flexDirection: 'row',
+    },
+    red: {
+      color: theme.palette.text.secondary,
     },
   })
 )

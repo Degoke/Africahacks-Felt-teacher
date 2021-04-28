@@ -23,7 +23,7 @@ const HomeSection = ({
 }: HomeSectionPropsType): React.ReactElement => {
   const classes = useStyles()
   return (
-    <div>
+    <>
       <div className={`${classes[backgroundClass]} ${classes.root}`}>
         <Grid
           container
@@ -61,7 +61,7 @@ const HomeSection = ({
           </Grid>
         </Grid>
       </div>
-    </div>
+    </>
   )
 }
 

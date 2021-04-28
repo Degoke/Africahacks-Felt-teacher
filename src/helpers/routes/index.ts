@@ -3,6 +3,7 @@ import Home from '../../pages/home'
 import Faqs from '../../pages/faqs'
 import Profile from '../../pages/profile'
 import Search from '../../pages/search'
+import AuthPage from '../../pages/auth'
 
 const routes: RoutesInterface[] = [
   {
@@ -24,6 +25,11 @@ const routes: RoutesInterface[] = [
     path: '/all',
     name: 'All',
     component: Search,
+  },
+  {
+    path: '/register',
+    name: 'Auth',
+    component: AuthPage,
   },
 ]
 

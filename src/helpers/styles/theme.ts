@@ -1,10 +1,22 @@
-import {
-  createMuiTheme,
-  responsiveFontSizes,
-  Theme,
-} from '@material-ui/core/styles'
+import { createMuiTheme, Theme } from '@material-ui/core/styles'
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
+
+const breakpoints = createBreakpoints({})
 
 const theme: Theme = createMuiTheme({
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        html: {
+          overflowX: 'hidden',
+          fontSize: '16px',
+          [breakpoints.down('sm')]: {
+            fontSize: '12px',
+          },
+        },
+      },
+    },
+  },
   palette: {
     primary: {
       main: '#5E5DBA',
@@ -28,4 +40,4 @@ const theme: Theme = createMuiTheme({
   },
 })
 
-export default responsiveFontSizes(theme)
+export default theme

@@ -14,27 +14,32 @@ import { Link } from 'react-router-dom'
 import MyInput from '../global/input'
 import MyButton from '../global/button'
 import useStyles from './style'
+import { useGetCode } from '../../hooks/api'
 
 type AuthFormGroups = 'login' | 'signup'
 
 type AuthFormPropTypes = {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleNumber: (e: React.ChangeEvent<HTMLInputElement>) => void
-  getCode: () => Promise<void>
   comparePasswords: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleSubmit: (e: React.FormEvent) => Promise<void>
   formGroup: AuthFormGroups
+  phone: number
+  setId: React.SetStateAction<React.Dispatch<string>>
 }
 
 const AuthForm = ({
   handleChange,
   handleNumber,
-  getCode,
+  phone,
   comparePasswords,
   handleSubmit,
   formGroup,
+  setId,
 }: AuthFormPropTypes): React.ReactElement => {
   const classes = useStyles()
+
+  const { mutate } = useGetCode()
   return (
     <div>
       <Grid container className={classes.root}>
@@ -171,7 +176,7 @@ const AuthForm = ({
                               type="number"
                               end={
                                 <InputAdornment position="end">
-                                  <Button onClick={getCode}>
+                                  <Button onClick={() => mutate({ phone })}>
                                     <Typography>Click to get code</Typography>
                                   </Button>
                                 </InputAdornment>
@@ -223,10 +228,8 @@ const AuthForm = ({
                     <Typography>
                       Already Have an account?{' '}
                       <span>
-                        <Link to="/login">
-                          <Typography color="textSecondary" display="inline">
-                            Login
-                          </Typography>
+                        <Link to="/login" className={classes.red}>
+                          Signup
                         </Link>
                       </span>
                     </Typography>
@@ -237,10 +240,8 @@ const AuthForm = ({
                     <Typography>
                       Already Have an account?{' '}
                       <span>
-                        <Link to="/register">
-                          <Typography color="textSecondary" display="inline">
-                            Signup
-                          </Typography>
+                        <Link to="/register" className={classes.red}>
+                          Signup
                         </Link>
                       </span>
                     </Typography>
