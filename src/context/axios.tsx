@@ -9,6 +9,7 @@ export default function AxiosProvider({
 }: React.PropsWithChildren<unknown>): JSX.Element {
   const myAxios = useMemo(() => {
     const axios = Axios.create({
+      baseURL: 'https://felt-teacher.herokuapp.com/api',
       headers: {
         'Content-Type': 'application/json',
       },

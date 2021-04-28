@@ -1,13 +1,38 @@
 /* eslint-disable import/prefer-default-export */
-import axios, { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
+import { useAxios } from '../hooks/axios'
+
+const axios = useAxios()
+
+type SignUpNameType = 'fullname' | 'nameOfSchool' | 'nameOfParent'
+
+type SignUpNameGroupType = {
+  [key in SignUpNameType]: string
+}
+
+export interface SignUpUserDataInterface extends SignUpNameGroupType {
+  email: string
+  password: string
+  phone: number
+  code: string
+  requestId: string
+  user: UserAuthType
+}
+
+export type SignUpCodeDataType = Pick<SignUpUserDataInterface, 'phone'>
 
 type UserAuthType = 'teachers' | 'parents' | 'schools'
 
-const API = axios.create({
-  baseURL: 'https://felt-teacher.herokuapp.com/api',
-})
+export const signUp = async (
+  userData: SignUpUserDataInterface
+): Promise<AxiosResponse> => {
+  const { data } = await axios.post(`/${userData.user}`, userData)
+  return data
+}
 
-export const signUp = async (user: UserAuthType): Promise<AxiosResponse> => {
-  const { data } = await API.get(`/${user}`)
+export const getCode = async (
+  phone: SignUpCodeDataType
+): Promise<AxiosResponse> => {
+  const { data } = await axios.post(`/sendcode`, phone)
   return data
 }
