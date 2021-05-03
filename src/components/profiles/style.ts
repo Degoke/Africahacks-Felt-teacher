@@ -9,7 +9,7 @@ export default makeStyles((theme: Theme) =>
     },
     root: {
       width: '85%',
-      paddingLeft: theme.spacing(12),
+      paddingLeft: theme.spacing(10),
     },
     avatar: {
       height: theme.spacing(12),

@@ -60,5 +60,8 @@ export default makeStyles((theme: Theme) =>
       backgroundPosition: '10% 70%, 90% 30%',
       backgroundSize: '1.7rem 1.7rem, 1.7rem 1.7rem',
     },
+    label: {
+      color: '#000000',
+    },
   })
 )

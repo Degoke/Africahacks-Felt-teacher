@@ -142,6 +142,9 @@ const Home = (): React.ReactElement => {
                   InputProps={{
                     className: classes.border,
                   }}
+                  InputLabelProps={{
+                    className: classes.label,
+                  }}
                   color="secondary"
                 />
               </Grid>

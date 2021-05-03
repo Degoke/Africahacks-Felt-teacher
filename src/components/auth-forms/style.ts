@@ -11,7 +11,7 @@ export default makeStyles((theme: Theme) =>
     },
     box: {
       marginTop: theme.spacing(2),
-      width: '50%',
+      width: '55%',
       [theme.breakpoints.down('md')]: {
         width: '70%',
       },
@@ -43,8 +43,7 @@ export default makeStyles((theme: Theme) =>
     selected: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
-      boxShadow: 'none',
-      transform: 'translate(1.1)',
+      boxShadow: '0px 2px 4px 1px rgba(130, 130, 131, 0.2)',
     },
     list: {
       display: 'flex',

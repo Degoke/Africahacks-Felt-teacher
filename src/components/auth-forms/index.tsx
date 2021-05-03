@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Container,
   Typography,
@@ -11,12 +11,18 @@ import {
   Button,
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import { useMutation } from 'react-query'
 import MyInput from '../global/input'
 import MyButton from '../global/button'
 import useStyles from './style'
-import { useGetCode } from '../../hooks/api'
+import {
+  getCode,
+  UserAuthType,
+  SignUpNameType,
+  SignUpUserDataInterface,
+} from '../../api/api'
 
-type AuthFormGroups = 'login' | 'signup'
+export type AuthFormGroups = 'login' | 'signup'
 
 type AuthFormPropTypes = {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -24,8 +30,20 @@ type AuthFormPropTypes = {
   comparePasswords: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleSubmit: (e: React.FormEvent) => Promise<void>
   formGroup: AuthFormGroups
-  phone: number
-  setId: React.SetStateAction<React.Dispatch<string>>
+  phone: SignUpUserDataInterface['phone']
+  setId: React.Dispatch<
+    React.SetStateAction<SignUpUserDataInterface['requestId']>
+  >
+  userGroup: UserAuthType
+  handleButton: (e: React.MouseEvent<HTMLDivElement>) => void
+  isSignup: boolean
+  isSignupError: boolean
+  isMatch: boolean
+  isLoggingIn: boolean
+  isLoginError: boolean
+  handlePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
+  phoneError: string
+  setPhoneError: React.Dispatch<React.SetStateAction<string>>
 }
 
 const AuthForm = ({
@@ -35,11 +53,57 @@ const AuthForm = ({
   comparePasswords,
   handleSubmit,
   formGroup,
+  userGroup,
   setId,
+  handleButton,
+  isSignup,
+  isSignupError,
+  isMatch,
+  isLoggingIn,
+  isLoginError,
+  handlePassword,
+  phoneError,
+  setPhoneError,
 }: AuthFormPropTypes): React.ReactElement => {
   const classes = useStyles()
 
-  const { mutate } = useGetCode()
+  const { mutate, isLoading, isSuccess, isError } = useMutation(getCode, {
+    onSuccess: (data) => setId(data.request_id as string),
+  })
+
+  const retreiveCode = (): void => {
+    if (phone !== 0) {
+      mutate({ phone })
+    } else {
+      setPhoneError('Please enter a valid phone number...')
+    }
+  }
+
+  const switchName = (): SignUpNameType => {
+    switch (userGroup) {
+      case 'schools':
+        return 'nameOfSchool'
+        break
+      case 'parents':
+        return 'nameOfParent'
+        break
+      default:
+        return 'fullname'
+        break
+    }
+  }
+
+  const switchLabel = (): string => {
+    switch (userGroup) {
+      case 'schools':
+        return 'School Name'
+        break
+      default:
+        return 'Full Name'
+        break
+    }
+  }
+
   return (
     <div>
       <Grid container className={classes.root}>
@@ -53,21 +117,25 @@ const AuthForm = ({
             <Paper elevation={4} className={classes.paper}>
               <Grid container direction="column" spacing={2}>
                 <Grid item>
-                  <Typography variant="h5">Sign Up</Typography>
+                  <Typography variant="h5">
+                    {formGroup.toUpperCase()}
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <List className={classes.list}>
                     <ListItem
-                      selected={false}
+                      id="teachers"
+                      selected={userGroup === 'teachers'}
                       classes={{
                         root: classes.unselected,
                         selected: classes.selected,
                       }}
                       button
+                      onClick={handleButton}
                     >
                       <ListItemText
                         primaryTypographyProps={{
-                          color: 'secondary',
+                          color: 'textPrimary',
                           variant: 'h6',
                         }}
                         className={classes.centerB}
@@ -76,16 +144,18 @@ const AuthForm = ({
                       </ListItemText>
                     </ListItem>
                     <ListItem
-                      selected
+                      id="schools"
+                      selected={userGroup === 'schools'}
                       classes={{
                         root: classes.unselected,
                         selected: classes.selected,
                       }}
                       button
+                      onClick={handleButton}
                     >
                       <ListItemText
                         primaryTypographyProps={{
-                          color: 'secondary',
+                          color: 'textPrimary',
                           variant: 'h6',
                         }}
                         className={classes.centerB}
@@ -94,16 +164,18 @@ const AuthForm = ({
                       </ListItemText>
                     </ListItem>
                     <ListItem
-                      selected={false}
+                      id="parents"
+                      selected={userGroup === 'parents'}
                       classes={{
                         root: classes.unselected,
                         selected: classes.selected,
                       }}
                       button
+                      onClick={handleButton}
                     >
                       <ListItemText
                         primaryTypographyProps={{
-                          color: 'secondary',
+                          color: 'textPrimary',
                           variant: 'h6',
                         }}
                         className={classes.centerB}
@@ -114,13 +186,13 @@ const AuthForm = ({
                   </List>
                 </Grid>
                 <Grid item>
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <Grid container direction="column" spacing={2}>
                       {formGroup === 'signup' && (
                         <Grid item>
                           <MyInput
-                            name="fullname"
-                            label="Full Name"
+                            name={switchName()}
+                            label={switchLabel()}
                             type="text"
                             onChange={handleChange}
                           />
@@ -150,24 +222,37 @@ const AuthForm = ({
                           />
                         </Grid>
                       )}
+                      {formGroup === 'login' && (
+                        <Grid item>
+                          <MyInput
+                            name="password"
+                            label="Password"
+                            type="password"
+                            onChange={handleChange}
+                          />
+                        </Grid>
+                      )}
 
-                      <Grid item>
-                        <MyInput
-                          name="password"
-                          label="Password"
-                          type="password"
-                          onChange={handleChange}
-                        />
-                      </Grid>
                       {formGroup === 'signup' && (
                         <>
                           <Grid item>
                             <MyInput
+                              name="password"
+                              label="Password"
+                              type="password"
+                              onChange={handlePassword}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <MyInput
                               name="confirm"
-                              label="Confiirm Password"
+                              label="Confirm Password"
                               type="password"
                               onChange={comparePasswords}
                             />
+                            {!isMatch && (
+                              <Typography>Passwords dont match...</Typography>
+                            )}
                           </Grid>
                           <Grid item>
                             <MyInput
@@ -176,25 +261,46 @@ const AuthForm = ({
                               type="number"
                               end={
                                 <InputAdornment position="end">
-                                  <Button onClick={() => mutate({ phone })}>
+                                  <Button onClick={retreiveCode}>
                                     <Typography>Click to get code</Typography>
                                   </Button>
                                 </InputAdornment>
                               }
                               onChange={handleChange}
                             />
+                            {isLoading && (
+                              <Typography>Getting code...</Typography>
+                            )}
+                            {isSuccess && (
+                              <Typography>
+                                Enter the code that was sent to your phone...
+                              </Typography>
+                            )}
+                            {isError && (
+                              <Typography>
+                                Error getting code try again...{' '}
+                              </Typography>
+                            )}
+                            {phoneError && (
+                              <Typography>{phoneError}</Typography>
+                            )}
                           </Grid>
                         </>
                       )}
 
                       {formGroup === 'signup' && (
                         <Grid item className={classes.centerB}>
-                          <MyButton
-                            type="submit"
-                            link={false}
-                            text="Signup"
-                            onClick={handleSubmit}
-                          />
+                          <MyButton type="submit" link={false} text="Signup" />
+                          {isSignup && (
+                            <Typography>
+                              Please wait while we sign you up...
+                            </Typography>
+                          )}
+                          {isSignupError && (
+                            <Typography>
+                              There was an error signing you up, Try again...
+                            </Typography>
+                          )}
                         </Grid>
                       )}
                       {formGroup === 'login' && (
@@ -214,10 +320,19 @@ const AuthForm = ({
                                 type="submit"
                                 link={false}
                                 text="Login"
-                                onClick={handleSubmit}
                               />
                             </Grid>
                           </Grid>
+                          {isLoggingIn && (
+                            <Typography>
+                              Please wait while we sign you in...
+                            </Typography>
+                          )}
+                          {isLoginError && (
+                            <Typography>
+                              There was an error signing you in, Try again...
+                            </Typography>
+                          )}
                         </Grid>
                       )}
                     </Grid>
@@ -229,7 +344,7 @@ const AuthForm = ({
                       Already Have an account?{' '}
                       <span>
                         <Link to="/login" className={classes.red}>
-                          Signup
+                          Login
                         </Link>
                       </span>
                     </Typography>

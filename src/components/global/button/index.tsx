@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/require-default-props */
 import React from 'react'
 import { Button } from '@material-ui/core'
@@ -22,7 +23,7 @@ const MyButton = ({
   const classes = useStyles()
   return (
     <Button
-      component={link ? Link : Button}
+      component={link ? Link : 'button'}
       variant="outlined"
       size="large"
       color="primary"

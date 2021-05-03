@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Button,
   ButtonGroup,
@@ -7,68 +7,84 @@ import {
   ListItem,
   ListItemText,
   Paper,
-  TextField,
   Typography,
 } from '@material-ui/core'
+import { useQuery } from 'react-query'
 import NavBar from '../../components/navbar'
 import useStyles from './style'
 import ProfileCard from '../../components/profile-cards'
+import MyInput from '../../components/global/input'
+import SearchGroups from '../../components/search-groups'
+import { getTeachers } from '../../api/api'
+
+const categories: string[] = ['Subjects', 'JuniorSecodary', 'Primary']
 
 const Search = (): React.ReactElement => {
+  const [category, setCategory] = useState<string>('')
+  const [subject, setSubject] = useState<string>('None')
+  const [current, setCurrent] = useState<string>('')
+
+  useEffect(() => {
+    if (subject !== 'None' && subject !== 'All') {
+      setCurrent(subject)
+      return
+    }
+    setCurrent(category)
+  }, [subject, category])
+
   const classes = useStyles()
-  const categories: string[] = [
-    'Science',
-    'Arts',
-    'Commercial',
-    'Nursery & Primary',
-  ]
-  const groups = [
+
+  const { data: teachers, isFetching, isError, isSuccess } = useQuery(
+    [current, current],
+    () => getTeachers(current),
     {
-      name: 'John Doe',
-      text: 'insert plenty text here',
-    },
-    {
-      name: 'John Doe',
-      text: 'insert plenty text here',
-    },
-    {
-      name: 'John Doe',
-      text: 'insert plenty text here',
-    },
-    {
-      name: 'John Doe',
-      text: 'insert plenty text here',
-    },
-    {
-      name: 'John Doe',
-      text: 'insert plenty text here',
-    },
-    {
-      name: 'John Doe',
-      text: 'insert plenty text here',
-    },
-  ]
+      onSuccess: (data) => console.log(data),
+      onError: (error) => console.log(error),
+    }
+  )
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
+    const { id } = e.currentTarget
+    if (id === 'Subjects') {
+      setSubject('All')
+      return
+    }
+    setSubject('None')
+    setCategory(id)
+  }
+
+  const handleSubject = (e: React.MouseEvent<HTMLDivElement>): void => {
+    const { id } = e.currentTarget
+    setSubject(id)
+  }
 
   return (
     <div>
       <NavBar page="profile" />
       <div className={classes.root}>
         <Grid container spacing={4}>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <Paper elevation={3}>
               <List dense>
                 {categories.map((c) => (
-                  <ListItem key={c} button dense divider>
+                  <ListItem
+                    key={c}
+                    id={c}
+                    button
+                    dense
+                    divider
+                    onClick={handleClick}
+                  >
                     <ListItemText primary={c} />
                   </ListItem>
                 ))}
               </List>
             </Paper>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={10}>
             <Grid container spacing={3}>
               <Grid item>
-                <TextField type="search" variant="outlined" size="medium" />
+                <MyInput type="search" name="search" label="Search" />
               </Grid>
               <Grid item>
                 <Typography>
@@ -78,21 +94,25 @@ const Search = (): React.ReactElement => {
                   teachers from our platform
                 </Typography>
               </Grid>
-              <Grid item>
-                <Grid container spacing={2}>
-                  {groups.map((g) => (
-                    <Grid item key={g.name} xs={4}>
-                      <ProfileCard />
-                    </Grid>
-                  ))}
+
+              {subject === 'All' && (
+                <Grid item className={classes.wide}>
+                  <SearchGroups handleSubject={handleSubject} />
                 </Grid>
-              </Grid>
-              <Grid item>
-                <ButtonGroup>
-                  <Button>Prev</Button>
-                  <Button>Next</Button>
-                </ButtonGroup>
-              </Grid>
+              )}
+              {subject === 'None' && (
+                <>
+                  <Grid item className={classes.wide}>
+                    <ProfileCard />
+                  </Grid>
+                  <Grid item>
+                    <ButtonGroup>
+                      <Button>Prev</Button>
+                      <Button>Next</Button>
+                    </ButtonGroup>
+                  </Grid>
+                </>
+              )}
             </Grid>
           </Grid>
         </Grid>

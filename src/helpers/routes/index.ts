@@ -17,7 +17,7 @@ const routes: RoutesInterface[] = [
     component: Faqs,
   },
   {
-    path: '/profile',
+    path: '/profile/:type/:id',
     name: 'Profile',
     component: Profile,
   },
@@ -28,6 +28,11 @@ const routes: RoutesInterface[] = [
   },
   {
     path: '/register',
+    name: 'Auth',
+    component: AuthPage,
+  },
+  {
+    path: '/login',
     name: 'Auth',
     component: AuthPage,
   },

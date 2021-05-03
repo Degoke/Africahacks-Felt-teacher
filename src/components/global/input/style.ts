@@ -6,8 +6,7 @@ export default makeStyles(() =>
       borderRadius: '25px',
     },
     label: {
-      color: '#E6E6E8',
-      fontWeight: 'bold',
+      color: '#000000',
     },
   })
 )

@@ -1,10 +1,24 @@
-import React, { useState } from 'react'
-import { SignUpUserDataInterface } from '../../api/api'
-import AuthForm from '../../components/auth-forms'
+import React, { useState, useEffect } from 'react'
+import { useMutation } from 'react-query'
+import { useLocation, useHistory } from 'react-router-dom'
+import {
+  SignUpUserDataInterface,
+  signUp,
+  UserAuthType,
+  login,
+  LoginDataType,
+} from '../../api/api'
+import AuthForm, { AuthFormGroups } from '../../components/auth-forms'
 import NavBar from '../../components/navbar'
+import decodeToken from '../../helpers/local-storage/decode-token'
 
 const AuthPage = (): React.ReactElement => {
-  const [data, setData] = useState<SignUpUserDataInterface>({
+  const { pathname } = useLocation()
+  const history = useHistory()
+
+  const [formGroup, setFormGroup] = useState<AuthFormGroups>('login')
+  const [userGroup, setUserGroup] = useState<UserAuthType>('schools')
+  const [userdata, setUserdata] = useState<SignUpUserDataInterface>({
     fullname: '',
     email: '',
     phone: 0,
@@ -14,57 +28,142 @@ const AuthPage = (): React.ReactElement => {
     user: 'schools',
   })
 
-  const [phone, setPhone] = useState<string>('')
-  const [requestid, setRequestId] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [loginData, setLoginData] = useState<LoginDataType>({
+    email: '',
+    password: '',
+    user: 'schools',
+  })
+
+  const [phone, setPhone] = useState<SignUpUserDataInterface['phone']>(0)
+  const [requestid, setRequestId] = useState<
+    SignUpUserDataInterface['requestId']
+  >('')
+  const [oldPassword, setOldPassword] = useState<
+    SignUpUserDataInterface['password']
+  >('')
+  const [password, setPassword] = useState<SignUpUserDataInterface['password']>(
+    ''
+  )
+  const [isMatch, setIsMatch] = useState<boolean>(true)
+
+  const [phoneError, setPhoneError] = useState<string>('')
+
+  useEffect(() => {
+    switch (pathname) {
+      case '/register':
+        setFormGroup('signup')
+        break
+      case '/login':
+        setFormGroup('login')
+        break
+      default:
+        break
+    }
+  }, [pathname])
+
+  useEffect(() => {
+    setUserdata((prev) => {
+      return {
+        ...prev,
+        user: userGroup,
+      }
+    })
+    setLoginData((prev) => {
+      return {
+        ...prev,
+        user: userGroup,
+      }
+    })
+  }, [userGroup])
+
+  const { mutate, isLoading, isError } = useMutation(signUp, {
+    onSuccess: (data) => {
+      localStorage.setItem('token', data.data.token)
+      const { name, type } = decodeToken(data.data.token)
+      history.push(`/profile/${type}s/${name}`)
+    },
+  })
+
+  const {
+    mutate: mutateLogin,
+    isLoading: isLoggingIn,
+    isError: isLoginError,
+  } = useMutation(login, {
+    onSuccess: (data) => {
+      localStorage.setItem('token', data.data.token)
+      const { id, type } = decodeToken(data.data.token)
+      const encodedId = btoa(id)
+      history.push(`/profile/${type}/${encodedId}`)
+    },
+  })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name } = e.target
     const { value } = e.target
-    console.log(value)
-    if (name === 'code') {
-      setData((prev) => {
+    if (formGroup === 'signup') {
+      if (name === 'code') {
+        setPhoneError('')
+      }
+
+      setUserdata((prev) => {
         return {
           ...prev,
           [name]: value,
-          phone: Number(phone),
+          phone,
           password,
           requestId: requestid,
-          user: 'schools',
+          user: userGroup,
         }
       })
-      return
     }
-    setData((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-        phone: Number(phone),
-        password,
-        requestId: requestid,
-        user: 'schools',
-      }
-    })
+
+    if (formGroup === 'login') {
+      setLoginData((prev) => {
+        return {
+          ...prev,
+          [name]: value,
+          user: userGroup,
+        }
+      })
+    }
+  }
+
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOldPassword(e.currentTarget.value)
   }
 
   const handleNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const phoneNumber = e.target.value
-    console.log(phoneNumber)
     const newNumber = `234${phoneNumber}`
-    setPhone(newNumber)
+    setPhone(Number(newNumber))
+    setPhoneError('')
   }
 
   const comparePasswords = (e: React.ChangeEvent<HTMLInputElement>) => {
     const confirmed = e.target.value
-    if (confirmed === data.password) {
+    if (confirmed === oldPassword) {
       setPassword(confirmed)
+      setIsMatch(true)
     } else {
-      setPassword('')
+      setIsMatch(false)
     }
   }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
+    if (formGroup === 'signup') {
+      if (isMatch) {
+        mutate(userdata)
+      }
+      return
+    }
+    if (formGroup === 'login') {
+      mutateLogin(loginData)
+    }
+  }
+
+  const handleButton = (e: React.MouseEvent<HTMLDivElement>): void => {
+    setUserGroup(e.currentTarget.id as UserAuthType)
   }
 
   return (
@@ -74,10 +173,20 @@ const AuthPage = (): React.ReactElement => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         comparePasswords={comparePasswords}
-        formGroup="signup"
+        formGroup={formGroup}
         phone={Number(phone)}
         handleNumber={handleNumber}
         setId={setRequestId}
+        userGroup={userGroup}
+        handleButton={handleButton}
+        isSignup={isLoading}
+        isSignupError={isError}
+        isMatch={isMatch}
+        isLoggingIn={isLoggingIn}
+        isLoginError={isLoginError}
+        handlePassword={handlePassword}
+        phoneError={phoneError}
+        setPhoneError={setPhoneError}
       />
     </>
   )
