@@ -8,13 +8,8 @@ const withAuth = (Component: React.FC) => {
     const token = getToken()
 
     if (token) {
-      const { exp, iat } = decodeToken(token)
-      const isAuth = new Date(exp) < new Date(Date.now())
-      console.log(isAuth)
-      console.log(new Date(exp))
-      console.log(new Date(iat))
-      console.log(new Date(Date.now()))
-
+      const { exp } = decodeToken(token)
+      const isAuth = Number(exp) < Date.now()
       if (isAuth) {
         return <Component />
       }

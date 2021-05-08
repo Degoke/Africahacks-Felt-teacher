@@ -21,7 +21,7 @@ const categories: string[] = ['Subjects', 'JuniorSecodary', 'Primary']
 
 const Search = (): React.ReactElement => {
   const [category, setCategory] = useState<string>('')
-  const [subject, setSubject] = useState<string>('None')
+  const [subject, setSubject] = useState<string>('All')
   const [current, setCurrent] = useState<string>('')
 
   useEffect(() => {
@@ -33,15 +33,6 @@ const Search = (): React.ReactElement => {
   }, [subject, category])
 
   const classes = useStyles()
-
-  const { data: teachers, isFetching, isError, isSuccess } = useQuery(
-    [current, current],
-    () => getTeachers(current),
-    {
-      onSuccess: (data) => console.log(data),
-      onError: (error) => console.log(error),
-    }
-  )
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     const { id } = e.currentTarget
@@ -100,10 +91,10 @@ const Search = (): React.ReactElement => {
                   <SearchGroups handleSubject={handleSubject} />
                 </Grid>
               )}
-              {subject === 'None' && (
+              {subject !== 'All' && (
                 <>
                   <Grid item className={classes.wide}>
-                    <ProfileCard />
+                    <ProfileCard current={current} />
                   </Grid>
                   <Grid item>
                     <ButtonGroup>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import {
   AppBar,
   Toolbar,
@@ -15,6 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import MyButton from '../global/button'
 import Logo from '../../assets/logo'
 import useStyles from './style'
+import { UserContext } from '../../helpers/context/user'
 
 type Tcomponent = 'home' | 'none' | 'profile'
 
@@ -24,6 +25,16 @@ type PropsType = {
 
 const NavBar = ({ page }: PropsType): React.ReactElement => {
   const classes = useStyles()
+
+  const { userType, userId } = useContext(UserContext)
+
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (userId) {
+      setIsLoggedIn(true)
+    }
+  }, [userId])
 
   const [anchorEl, setAnchorEl] = useState<null | SVGSVGElement>(null)
 
@@ -40,14 +51,16 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
       <Toolbar>
         <Grid container justify="space-between" alignItems="center">
           <Grid item>
-            <Grid container alignItems="center">
-              <Grid item>
-                <Logo />
+            <Button component={Link} to="/">
+              <Grid container alignItems="center">
+                <Grid item>
+                  <Logo />
+                </Grid>
+                <Grid item>
+                  <Typography color="primary">Felt Teachers</Typography>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Typography color="primary">Felt Teachers</Typography>
-              </Grid>
-            </Grid>
+            </Button>
           </Grid>
           <Hidden smDown>
             {page === 'home' && (
@@ -68,34 +81,59 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                       FAQ&apos;S
                     </Button>
                   </Grid>
-                  <Grid item>
-                    <MyButton to="/login" text="Login" link />
-                  </Grid>
+                  {isLoggedIn && (
+                    <Grid item>
+                      <Button
+                        component={Link}
+                        to={`/profile/${userType}/${userId}`}
+                      >
+                        <Avatar
+                          data-testid="profile-avatar"
+                          alt="profile picture"
+                        >
+                          AA
+                        </Avatar>
+                      </Button>
+                    </Grid>
+                  )}
+                  {!isLoggedIn && (
+                    <Grid item>
+                      <MyButton to="/login" text="Login" link />
+                    </Grid>
+                  )}
                 </Grid>
               </Grid>
             )}
             {page === 'profile' && (
               <Grid item>
-                <Grid container spacing={4}>
+                <Grid container spacing={4} alignItems="center">
                   <Grid item>
                     <Button component={Link} to="/" color="primary">
                       Home
                     </Button>
                   </Grid>
                   <Grid item>
-                    <Button component={Link} to="/teachers" color="primary">
+                    <Button component={Link} to="/all" color="primary">
                       Teachers
                     </Button>
                   </Grid>
                   <Grid item>
-                    <Button component={Link} to="/" color="primary">
+                    <Button component={Link} to="/faqs" color="primary">
                       Help
                     </Button>
                   </Grid>
                   <Grid item>
-                    <Avatar data-testid="profile-avatar" alt="profile picture">
-                      AA
-                    </Avatar>
+                    <Button
+                      component={Link}
+                      to={`/profile/${userType}/${userId}`}
+                    >
+                      <Avatar
+                        data-testid="profile-avatar"
+                        alt="profile picture"
+                      >
+                        AA
+                      </Avatar>
+                    </Button>
                   </Grid>
                 </Grid>
               </Grid>
@@ -128,9 +166,29 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                   <MenuItem component={Link} to="/faqs" onClick={handleClose}>
                     FAQ&apos;S
                   </MenuItem>
-                  <MenuItem component={Link} to="/login" onClick={handleClose}>
-                    Login
-                  </MenuItem>
+                  {isLoggedIn && (
+                    <MenuItem
+                      component={Link}
+                      to={`/profile/${userType}/${userId}`}
+                      onClick={handleClose}
+                    >
+                      <Avatar
+                        data-testid="profile-avatar"
+                        alt="profile picture"
+                      >
+                        AA
+                      </Avatar>
+                    </MenuItem>
+                  )}
+                  {!isLoggedIn && (
+                    <MenuItem
+                      component={Link}
+                      to="/login"
+                      onClick={handleClose}
+                    >
+                      Login
+                    </MenuItem>
+                  )}
                 </Menu>
               </Grid>
             )}
@@ -164,7 +222,11 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                   <MenuItem component={Link} to="/faqs" onClick={handleClose}>
                     Help
                   </MenuItem>
-                  <MenuItem component={Link} to="/" onClick={handleClose}>
+                  <MenuItem
+                    component={Link}
+                    to={`/profile/${userType}/${userId}`}
+                    onClick={handleClose}
+                  >
                     <Avatar data-testid="profile-avatar" alt="profile picture">
                       AA
                     </Avatar>

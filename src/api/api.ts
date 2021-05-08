@@ -32,6 +32,17 @@ export interface SignUpUserDataInterface extends Partial<SignUpNameGroupType> {
   user: UserAuthType
 }
 
+export interface UpdateUserDataInterface
+  extends Partial<
+    Omit<SignUpUserDataInterface, 'code' | 'requestId' | 'user'>
+  > {
+  state: string
+  yearOfExperience: string
+  subject: string | string[]
+  id: string
+  type: string
+}
+
 export type SignUpCodeDataType = Pick<SignUpUserDataInterface, 'phone'>
 
 export type UserAuthType = 'teachers' | 'parents' | 'schools'
@@ -75,5 +86,16 @@ export const getMyProfile = async (type: string, id: string) => {
   if (type === 'teacher') {
     return data.user
   }
+  return data
+}
+
+export const updateProfile = async (
+  userData: Partial<UpdateUserDataInterface>
+) => {
+  const { id } = userData
+  const { type } = userData
+  delete userData.id
+  delete userData.type
+  const { data } = await APP.put(`/${type}s/${id}`, userData)
   return data
 }

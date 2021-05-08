@@ -23,7 +23,7 @@ const Profile = (): React.ReactElement => {
     const token = getToken()
     if (token) {
       const { id: userId } = decodeToken(token)
-      if (atob(id) === userId) {
+      if (id === userId) {
         setCategory('private')
         return
       }
@@ -33,7 +33,7 @@ const Profile = (): React.ReactElement => {
 
   const { data: profile, isLoading, isError, isSuccess } = useQuery(
     ['profile', id],
-    () => getMyProfile(type, atob(id)),
+    () => getMyProfile(type, id),
     {
       onSuccess: (data) => console.log(data),
     }

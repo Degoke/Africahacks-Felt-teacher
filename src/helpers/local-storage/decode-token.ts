@@ -10,7 +10,7 @@ export type DecodedTokenType = {
 }
 
 export const getToken = (): string | null => {
-  return localStorage.getItem('token')
+  return sessionStorage.getItem('token')
 }
 
 const decodeToken = (token: string): Omit<DecodedTokenType, '_id'> => {

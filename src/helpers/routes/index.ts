@@ -4,6 +4,7 @@ import Faqs from '../../pages/faqs'
 import Profile from '../../pages/profile'
 import Search from '../../pages/search'
 import AuthPage from '../../pages/auth'
+import Dashboard from '../../pages/dashboard'
 
 const routes: RoutesInterface[] = [
   {
@@ -35,6 +36,11 @@ const routes: RoutesInterface[] = [
     path: '/login',
     name: 'Auth',
     component: AuthPage,
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
   },
 ]
 

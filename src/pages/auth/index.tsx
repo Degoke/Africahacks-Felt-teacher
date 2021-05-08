@@ -78,9 +78,9 @@ const AuthPage = (): React.ReactElement => {
 
   const { mutate, isLoading, isError } = useMutation(signUp, {
     onSuccess: (data) => {
-      localStorage.setItem('token', data.data.token)
-      const { name, type } = decodeToken(data.data.token)
-      history.push(`/profile/${type}s/${name}`)
+      sessionStorage.setItem('token', data.data.token)
+      const { id, type } = decodeToken(data.data.token)
+      history.push(`/profile/${type}/${id}`)
     },
   })
 
@@ -90,10 +90,9 @@ const AuthPage = (): React.ReactElement => {
     isError: isLoginError,
   } = useMutation(login, {
     onSuccess: (data) => {
-      localStorage.setItem('token', data.data.token)
+      sessionStorage.setItem('token', data.data.token)
       const { id, type } = decodeToken(data.data.token)
-      const encodedId = btoa(id)
-      history.push(`/profile/${type}/${encodedId}`)
+      history.push(`/profile/${type}/${id}`)
     },
   })
 
