@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
-import { Redirect, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { getMyProfile } from '../../api/api'
 import NavBar from '../../components/navbar'
 import Profiles from '../../components/profiles'
@@ -33,16 +33,13 @@ const Profile = (): React.ReactElement => {
 
   const { data: profile, isLoading, isError, isSuccess } = useQuery(
     ['profile', id],
-    () => getMyProfile(type, id),
-    {
-      onSuccess: (data) => console.log(data),
-    }
+    () => getMyProfile(type, id)
   )
 
   return (
     <div>
       {isLoading && <h1>Loading...</h1>}
-      {isError && <Redirect to="/" />}
+      {isError && <h1>Error</h1>}
       {isSuccess && (
         <>
           <NavBar page="profile" />

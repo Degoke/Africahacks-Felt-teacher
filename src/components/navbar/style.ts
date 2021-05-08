@@ -7,7 +7,7 @@ export default makeStyles((theme: Theme) =>
       [theme.breakpoints.down('sm')]: {
         padding: theme.spacing(0, 2),
       },
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: '#ffffff',
     },
     avatar: {
       height: theme.spacing(4),

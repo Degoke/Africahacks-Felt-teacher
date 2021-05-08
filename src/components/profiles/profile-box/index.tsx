@@ -11,6 +11,8 @@ type ProfileBoxPropType = {
   handleChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void
+  name: string
+  isEdit: boolean
 }
 
 const ProfileBox = ({
@@ -18,6 +20,8 @@ const ProfileBox = ({
   icon,
   text,
   handleChange,
+  name,
+  isEdit,
 }: ProfileBoxPropType): React.ReactElement => {
   const classes = useStyles()
 
@@ -39,12 +43,17 @@ const ProfileBox = ({
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
-            <Typography>{text}</Typography>
-          </Grid>
+          {!isEdit && (
+            <Grid item>
+              <Typography>{text}</Typography>
+            </Grid>
+          )}
+
           {handleChange && (
             <Grid item>
-              <input type="text" name={header} onChange={handleChange} />
+              {isEdit && (
+                <MyInput name={name} label={header} onChange={handleChange} />
+              )}
             </Grid>
           )}
         </Grid>

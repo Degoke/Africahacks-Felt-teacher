@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react'
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import React, { createContext, useState, useEffect } from 'react'
 import decodeToken, { getToken } from '../local-storage/decode-token'
 
 export type UserContextType = {
@@ -37,13 +38,10 @@ const UserContextProvider = ({ children }: UserContextProviderType) => {
     setUserType('')
   })
 
-  const value: UserContextProviderValue = useMemo(
-    () => ({
-      userId,
-      userType,
-    }),
-    [userId, userType]
-  )
+  const value: UserContextProviderValue = {
+    userId,
+    userType,
+  }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }

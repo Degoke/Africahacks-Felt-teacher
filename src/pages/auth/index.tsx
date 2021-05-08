@@ -91,7 +91,9 @@ const AuthPage = (): React.ReactElement => {
   } = useMutation(login, {
     onSuccess: (data) => {
       sessionStorage.setItem('token', data.data.token)
-      const { id, type } = decodeToken(data.data.token)
+      const { id, type, name } = decodeToken(data.data.token)
+      sessionStorage.setItem('image', data.data[`${type}`].image)
+      sessionStorage.setItem('name', name)
       history.push(`/profile/${type}/${id}`)
     },
   })

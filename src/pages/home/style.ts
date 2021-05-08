@@ -8,6 +8,7 @@ export default makeStyles((theme: Theme) =>
     root: {
       width: '85%',
       margin: 'auto',
+      backgroundColor: '#ffffff',
     },
     contain: {
       backgroundImage: `url(${ShapeRight}), url(${ShapeLeft}), url(${ShapeRight}), url(${ShapeLeft})`,

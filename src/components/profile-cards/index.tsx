@@ -25,11 +25,7 @@ const ProfileCard = ({ current }: ProfileCardPropsType): React.ReactElement => {
   const history = useHistory()
   const { data: teachers, isFetching, isError, isSuccess } = useQuery(
     [current, current],
-    () => getTeachers(current),
-    {
-      onSuccess: (data) => console.log(data),
-      onError: (error) => console.log(error),
-    }
+    () => getTeachers(current)
   )
 
   const classes = useStyles()
@@ -70,6 +66,7 @@ const ProfileCard = ({ current }: ProfileCardPropsType): React.ReactElement => {
         </>
       )}
       {isError && <Typography>Something went wrong</Typography>}
+      {isFetching && <Typography>Loading...</Typography>}
     </Grid>
   )
 }

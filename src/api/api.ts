@@ -3,7 +3,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios'
-import { getToken } from '../helpers/local-storage/decode-token'
+import decodeToken, { getToken } from '../helpers/local-storage/decode-token'
 
 const APP = axios.create({
   baseURL: 'https://felt-teacher.herokuapp.com/api',
@@ -12,9 +12,14 @@ const APP = axios.create({
   },
 })
 
-const token = getToken()
-if (token) {
-  APP.defaults.headers.common.Authorization = `Bearer ${token}`
+// eslint-disable-next-line consistent-return
+const setHeader = () => {
+  const token = getToken()
+  if (token) {
+    APP.defaults.headers.common.Authorization = `Bearer ${token}`
+    const { id } = decodeToken(token)
+    return id
+  }
 }
 
 export type SignUpNameType = 'fullname' | 'nameOfSchool' | 'nameOfParent'
@@ -52,6 +57,10 @@ export type LoginDataType = Pick<
   'email' | 'password' | 'user'
 >
 
+export type ResumeType = {
+  resume: File
+}
+
 export const signUp = async (userData: SignUpUserDataInterface) => {
   const { data } = await APP.post(`/${userData.user}`, userData)
   return data
@@ -77,11 +86,13 @@ export const login = async (userData: LoginDataType) => {
 }
 
 export const getTeachers = async (subject: string) => {
+  setHeader()
   const { data } = await APP.get(`/teachers/${subject}`)
   return data
 }
 
 export const getMyProfile = async (type: string, id: string) => {
+  setHeader()
   const { data } = await APP.get(`/${type}s/${id}`)
   if (type === 'teacher') {
     return data.user
@@ -92,10 +103,29 @@ export const getMyProfile = async (type: string, id: string) => {
 export const updateProfile = async (
   userData: Partial<UpdateUserDataInterface>
 ) => {
+  setHeader()
   const { id } = userData
   const { type } = userData
   delete userData.id
   delete userData.type
   const { data } = await APP.put(`/${type}s/${id}`, userData)
+  return data
+}
+
+export const updateResume = async (resume: ResumeType) => {
+  const id = setHeader()
+  const { data } = await APP.put(`/teachers/${id}/resume`, resume)
+  return data
+}
+
+export const getSchoolJobs = async () => {
+  setHeader()
+  const { data } = await APP.get('/job')
+  return data
+}
+
+export const getParentJobs = async () => {
+  setHeader()
+  const { data } = await APP.get('/jobParent')
   return data
 }

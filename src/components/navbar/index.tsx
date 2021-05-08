@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   AppBar,
   Toolbar,
@@ -15,7 +15,10 @@ import MenuIcon from '@material-ui/icons/Menu'
 import MyButton from '../global/button'
 import Logo from '../../assets/logo'
 import useStyles from './style'
-import { UserContext } from '../../helpers/context/user'
+import decodeToken, {
+  getToken,
+  getImage,
+} from '../../helpers/local-storage/decode-token'
 
 type Tcomponent = 'home' | 'none' | 'profile'
 
@@ -26,9 +29,24 @@ type PropsType = {
 const NavBar = ({ page }: PropsType): React.ReactElement => {
   const classes = useStyles()
 
-  const { userType, userId } = useContext(UserContext)
+  const [userId, setUserId] = useState<string>('')
+  const [userType, setUserType] = useState<string>('')
+  const [userImage, setUserImage] = useState<string>('')
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+
+  useEffect(() => {
+    const token = getToken()
+    const image = getImage()
+    if (token) {
+      const { id, type } = decodeToken(token)
+      setUserId(id)
+      setUserType(type)
+    }
+    if (image) {
+      setUserImage(image)
+    }
+  }, [])
 
   useEffect(() => {
     if (userId) {
@@ -65,7 +83,7 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
           <Hidden smDown>
             {page === 'home' && (
               <Grid item>
-                <Grid container spacing={4}>
+                <Grid container spacing={4} alignItems="center">
                   <Grid item>
                     <Button component={Link} to="/" color="primary">
                       Home
@@ -90,6 +108,7 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                         <Avatar
                           data-testid="profile-avatar"
                           alt="profile picture"
+                          src={userImage}
                         >
                           AA
                         </Avatar>
@@ -108,8 +127,8 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
               <Grid item>
                 <Grid container spacing={4} alignItems="center">
                   <Grid item>
-                    <Button component={Link} to="/" color="primary">
-                      Home
+                    <Button component={Link} to="/dashboard" color="primary">
+                      Dashboard
                     </Button>
                   </Grid>
                   <Grid item>
@@ -130,6 +149,7 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                       <Avatar
                         data-testid="profile-avatar"
                         alt="profile picture"
+                        src={userImage}
                       >
                         AA
                       </Avatar>
@@ -175,6 +195,7 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                       <Avatar
                         data-testid="profile-avatar"
                         alt="profile picture"
+                        src={userImage}
                       >
                         AA
                       </Avatar>
@@ -209,8 +230,12 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                   anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                   transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 >
-                  <MenuItem component={Link} to="/" onClick={handleClose}>
-                    Home
+                  <MenuItem
+                    component={Link}
+                    to="/dashboard"
+                    onClick={handleClose}
+                  >
+                    Dashboard
                   </MenuItem>
                   <MenuItem
                     component={Link}
@@ -227,7 +252,11 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                     to={`/profile/${userType}/${userId}`}
                     onClick={handleClose}
                   >
-                    <Avatar data-testid="profile-avatar" alt="profile picture">
+                    <Avatar
+                      data-testid="profile-avatar"
+                      alt="profile picture"
+                      src={userImage}
+                    >
                       AA
                     </Avatar>
                   </MenuItem>

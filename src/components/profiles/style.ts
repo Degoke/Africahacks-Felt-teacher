@@ -6,6 +6,9 @@ export default makeStyles((theme: Theme) =>
       height: '35vh',
       backgroundColor: 'grey',
       marginBottom: theme.spacing(2),
+      display: 'flex',
+      justifyContent: 'space-between',
+      padding: theme.spacing(2, 4),
     },
     root: {
       width: '85%',
@@ -29,6 +32,14 @@ export default makeStyles((theme: Theme) =>
     },
     summary: {
       padding: theme.spacing(2, 0),
+    },
+    video: {
+      marginLeft: '50%',
+      alignSelf: 'center',
+    },
+    video2: {
+      marginLeft: '30%',
+      alignSelf: 'center',
     },
   })
 )

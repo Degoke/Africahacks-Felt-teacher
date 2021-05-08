@@ -30,7 +30,7 @@ const theme: Theme = createMuiTheme({
       secondary: '#FDB827',
     },
     background: {
-      default: '#FFFFFF',
+      default: '#ffffff',
     },
   },
   typography: {

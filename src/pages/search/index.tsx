@@ -9,13 +9,11 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core'
-import { useQuery } from 'react-query'
 import NavBar from '../../components/navbar'
 import useStyles from './style'
 import ProfileCard from '../../components/profile-cards'
 import MyInput from '../../components/global/input'
 import SearchGroups from '../../components/search-groups'
-import { getTeachers } from '../../api/api'
 
 const categories: string[] = ['Subjects', 'JuniorSecodary', 'Primary']
 

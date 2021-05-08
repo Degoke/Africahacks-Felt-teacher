@@ -5,6 +5,7 @@ export default makeStyles((theme: Theme) =>
     root: {
       marginTop: theme.spacing(1),
       padding: theme.spacing(2, 4),
+      backgroundColor: '#ffffff',
       [theme.breakpoints.down('sm')]: {
         padding: theme.spacing(2, 1),
       },
@@ -12,6 +13,7 @@ export default makeStyles((theme: Theme) =>
     box: {
       marginTop: theme.spacing(2),
       width: '55%',
+      backgroundColor: theme.palette.background.default,
       [theme.breakpoints.down('md')]: {
         width: '70%',
       },
