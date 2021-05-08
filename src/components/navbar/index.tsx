@@ -239,7 +239,7 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                   </MenuItem>
                   <MenuItem
                     component={Link}
-                    to="/teachers"
+                    to="/all"
                     onClick={handleClose}
                   >
                     Teachers
