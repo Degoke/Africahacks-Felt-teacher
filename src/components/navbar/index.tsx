@@ -237,11 +237,7 @@ const NavBar = ({ page }: PropsType): React.ReactElement => {
                   >
                     Dashboard
                   </MenuItem>
-                  <MenuItem
-                    component={Link}
-                    to="/all"
-                    onClick={handleClose}
-                  >
+                  <MenuItem component={Link} to="/all" onClick={handleClose}>
                     Teachers
                   </MenuItem>
                   <MenuItem component={Link} to="/faqs" onClick={handleClose}>
