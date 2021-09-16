@@ -23,6 +23,7 @@ import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import CameraAltIcon from '@material-ui/icons/CameraAlt'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 
+import { useHistory } from 'react-router-dom'
 import MyButton from '../global/button'
 import useStyles from './style'
 import ProfileBox from './profile-box'
@@ -97,6 +98,7 @@ const Profiles = ({
   const { mutate, isLoading } = useMutation(updateProfile, {
     onSuccess: () => {
       setIsEdit(false)
+      window.location.reload()
     },
   })
 
@@ -111,7 +113,15 @@ const Profiles = ({
         delete (data as any)[key]
       }
     }
+    console.log(data)
     mutate(data)
+  }
+
+  const history = useHistory()
+
+  const logout = () => {
+    sessionStorage.clear()
+    history.push('/')
   }
 
   const handleResume = () => {}
@@ -121,8 +131,10 @@ const Profiles = ({
   }
   return (
     <div>
-      <div>
-        <Typography>Update your profile to get verified</Typography>
+      <div style={{ padding: '1rem' }}>
+        {!profile.approved && (
+          <Typography>Update your profile to get verified</Typography>
+        )}
       </div>
       <div className={classes.header}>
         {!profile.approved && (
@@ -141,11 +153,14 @@ const Profiles = ({
         {category === 'private' && (
           <div>
             {!isEdit && (
-              <MyButton
-                text="Edit"
-                link={false}
-                onClick={() => setIsEdit(true)}
-              />
+              <>
+                <MyButton
+                  text="Edit"
+                  link={false}
+                  onClick={() => setIsEdit(true)}
+                />
+                <MyButton text="Logout" link={false} onClick={logout} />
+              </>
             )}
             {isEdit && (
               <MyButton text="Save" link={false} onClick={handleSubmit} />

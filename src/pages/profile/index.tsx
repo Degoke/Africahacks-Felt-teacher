@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 import { getMyProfile } from '../../api/api'
 import NavBar from '../../components/navbar'
 import Profiles from '../../components/profiles'
-import withAuth from '../../helpers/auth/with-auth'
 import decodeToken, { getToken } from '../../helpers/local-storage/decode-token'
 
 type ParamsType = {
@@ -50,4 +49,4 @@ const Profile = (): React.ReactElement => {
   )
 }
 
-export default withAuth(Profile)
+export default Profile
