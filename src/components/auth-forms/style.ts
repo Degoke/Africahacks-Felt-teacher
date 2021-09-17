@@ -39,14 +39,13 @@ export default makeStyles((theme: Theme) =>
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
       '&$selected': {
-        backgroundColor: '#ffffff',
+        backgroundColor: '#5e5dba',
       },
     },
     selected: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
       boxShadow: '0px 2px 4px 1px rgba(130, 130, 131, 0.2)',
-      backgroundColor: '#5e5dba',
     },
     list: {
       display: 'flex',
