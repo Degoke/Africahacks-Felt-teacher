@@ -40,6 +40,7 @@ export default makeStyles((theme: Theme) =>
       paddingBottom: theme.spacing(1),
       '&$selected': {
         backgroundColor: '#5e5dba',
+        color: '#ffffff',
       },
     },
     selected: {
